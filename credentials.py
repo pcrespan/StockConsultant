@@ -85,7 +85,8 @@ def register():
 
 
 # Needs refactoring
-def validateLogin(userInfo, pwd):
+def validateLogin(usr, pwd):
+    userInfo = getUser(usr)
     if check_password_hash(userInfo[0][2], pwd):
         return True
     return False
@@ -99,6 +100,9 @@ def getUser(usr):
     return userInfo
 
 
+# def genToken():
+
+
 # Still need to generate JWT token, needs refactoring
 @app.route("/login", methods = ["GET", "POST"])
 def login():
@@ -106,10 +110,10 @@ def login():
         usr = request.form.get("username")
         pwd = request.form.get("password")
 
-        if usr and pwd:
-            userInfo = getUser(usr)
-            if not validateLogin(userInfo, pwd):
-                return redirect("/login")
+        if usr and pwd and validateLogin(usr, pwd):
             return redirect("/")
+        
+        # Generate jwt token
+        return redirect("/login")
     else:
         return render_template("login.html")
