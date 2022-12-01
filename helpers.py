@@ -1,6 +1,7 @@
 import psycopg2
 from werkzeug.security import check_password_hash
 from functools import wraps
+from datetime import datetime, timedelta
 import jwt
 
 
@@ -11,7 +12,7 @@ class dbConnection:
                 host = "localhost",
                 database = "api",
                 user = "postgres",
-                password = "postgres"
+                password = "onote"
                 )
 
         cursor = conn.cursor()
@@ -31,7 +32,7 @@ class dbConnection:
 
     @staticmethod
     def commitChanges(conn, cursor):
-        cursor.commit()
+        conn.commit()
         dbConnection.closeConnection(conn, cursor)
 
 
@@ -69,8 +70,22 @@ def validateLogin(usr, pwd):
 def getUser(usr):
     conn, cursor = dbConnection.getConnection()
     cursor.execute("SELECT id, password FROM users WHERE username = %s;", (usr, ))
-    dbConnection.closeConnection(conn, cursor)
     userInfo = cursor.fetchall()
+    dbConnection.closeConnection(conn, cursor)
     return userInfo
+
+
+def genToken(usr, SECRET_KEY):
+    userInfo = getUser(usr)
+    tokenExpire = datetime.now() + timedelta(minutes = 30)
+
+    token = jwt.encode({
+        "uid": userInfo[0][1],
+        "exp": tokenExpire
+    }, SECRET_KEY)
+
+    return token
+
+    
 
 

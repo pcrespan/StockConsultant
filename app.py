@@ -1,37 +1,49 @@
-from bs4 import BeautifulSoup
-import requests
+from flask import Flask, jsonify, make_response, redirect, render_template, request, session
+from flask_session import Session
+from functools import wraps
+from werkzeug.security import generate_password_hash
+import jwt
+import psycopg2
+from helpers import *
 
 
-URL = "https://finance.yahoo.com/quote/"
-HEADERS = ({'User-Agent':
-            'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36',
-            'Accept-Language': 'en-US, en;q=0.5'})
-
-def getStockSoup(stock):
-    print("Sending request...")
-    request = requests.get(URL + stock, headers = HEADERS)
-    print("Sent!")
-    content = request.content
-    stockSoup = BeautifulSoup(content, "html.parser")
-    return stockSoup
+app = Flask(__name__)
+app.config["TEMPLATES_AUTO_RELOAD"] = True
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+app.config["SECRET_KEY"] = ""
+Session(app)
 
 
-def getStockInfo(soup):
-    stockInfo = {}
+# Error here, find a way to receive info without needing forms
+@app.route("/register", methods = ["GET", "POST"])
+def register():
+    if request.method == "POST":
+        usr = request.form.get("user")
+        pwd = request.form.get("password")
+        pwdConf = request.form.get("confirmation")
 
-    allInfo = soup.find_all("td", class_ = "Ta(end) Fw(600) Lh(14px)")
+        if not validateRegister(usr, pwd, pwdConf):
+            return redirect("/register")
 
-    for info in allInfo: 
-        print(info.text)
-
-
-def main():
-    soup = getStockSoup(input("Stock: "))
-    print(getStockInfo(soup))
-
-
-if __name__ == "__main__":
-    main()
+        hashPwd = generate_password_hash(pwd)
+        registerUser(usr, hashPwd)
+        return make_response("User registered", 200)
+    else:
+        return render_template("register.html")
 
 
+# Still need to generate JWT token, needs refactoring
+@app.route("/login", methods = ["GET", "POST"])
+def login():
+    if request.method == "POST":
+        usr = request.form.get("username")
+        pwd = request.form.get("password")
 
+        if usr and pwd and validateLogin(usr, pwd):
+            # Generate jwt token
+            token = genToken(usr, app.config["SECRET_KEY"])
+            return {"token": token}
+        return redirect("/login")
+    else:
+        return render_template("login.html")
