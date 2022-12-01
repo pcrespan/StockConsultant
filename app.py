@@ -12,7 +12,27 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 app.config["SECRET_KEY"] = ""
+ALGORITHM = "HS256"
 Session(app)
+
+
+def jwtRequired(f):
+    @wraps(f)
+    def checkToken(*args, **kwargs):
+        accessToken = request.form.get("accessToken")
+
+        if not accessToken:
+            return jsonify({"message": "No token provided"})
+        
+        # Verify token, if it's invalid, raises error
+        try:
+            requestInfo = jwt.decode(accessToken, app.config["SECRET_KEY"], algorithms = ALGORITHM)
+            print(requestInfo)
+            return f(*args, **kwargs)
+        except Exception as e:
+            print(e)
+            return jsonify({"message": "Invalid token"})
+    return checkToken
 
 
 # Error here, find a way to receive info without needing forms
@@ -47,3 +67,10 @@ def login():
         return redirect("/login")
     else:
         return render_template("login.html")
+
+
+@app.route("/", methods = ["GET", "POST"])
+@jwtRequired
+def index():
+    pass
+    

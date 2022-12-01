@@ -1,6 +1,5 @@
 import psycopg2
 from werkzeug.security import check_password_hash
-from functools import wraps
 from datetime import datetime, timedelta
 import jwt
 
@@ -85,7 +84,4 @@ def genToken(usr, SECRET_KEY):
     }, SECRET_KEY)
 
     return token
-
-    
-
 
