@@ -62,7 +62,7 @@ def registerUser(usr, hashPwd):
 # Needs refactoring
 def validateLogin(usr, pwd):
     userInfo = getUser(usr)
-    if check_password_hash(userInfo[0][2], pwd):
+    if check_password_hash(userInfo[0][1], pwd):
         return True
     return False
 
@@ -80,7 +80,7 @@ def genToken(usr, SECRET_KEY):
     tokenExpire = datetime.now() + timedelta(minutes = 30)
 
     token = jwt.encode({
-        "uid": userInfo[0][1],
+        "uid": userInfo[0][0],
         "exp": tokenExpire
     }, SECRET_KEY)
 

@@ -19,7 +19,7 @@ Session(app)
 @app.route("/register", methods = ["GET", "POST"])
 def register():
     if request.method == "POST":
-        usr = request.form.get("user")
+        usr = request.form.get("username")
         pwd = request.form.get("password")
         pwdConf = request.form.get("confirmation")
 
