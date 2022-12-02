@@ -78,4 +78,4 @@ def index():
     
     if len(stockInfo := getStock(stockSymbol)) != 0:
         return jsonify(stockInfo)
-    return jsonify({"message": "No information found"})
+    return jsonify({"message": "No information found or wrong stock symbol"})

@@ -7,6 +7,7 @@ HEADERS = ({'User-Agent':
             'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36',
             'Accept-Language': 'en-US, en;q=0.5'})
 
+
 def getStockSoup(stock):
     print("Sending request...")
     request = requests.get(URL + stock, headers = HEADERS)
@@ -21,16 +22,21 @@ def getStockInfo(soup):
     infoKeys = []
     infoValues = []
 
+    # Find a way to put everything together
+    price = soup.find("fin-streamer", class_ = "Fw(b) Fz(36px) Mb(-4px) D(ib)")
     tableRows = soup.find_all("tr", class_ = "Bxz(bb) Bdbw(1px) Bdbs(s) Bdc($seperatorColor) H(36px)")
+    
+    if price and tableRows:
+        stockInfo["price"] = price.text
 
-    for row in tableRows:
-        infoKeys.append(row.find("td", class_ = "C($primaryColor) W(51%)").text)
-        infoValues.append(row.find("td", class_ = "Ta(end) Fw(600) Lh(14px)").text)
+        for row in tableRows:
+            infoKeys.append(row.find("td", class_ = "C($primaryColor) W(51%)").text)
+            infoValues.append(row.find("td", class_ = "Ta(end) Fw(600) Lh(14px)").text)
 
-    for key, value in zip(infoKeys, infoValues):
-        stockInfo[key] = value
-
-    return stockInfo
+        for key, value in zip(infoKeys, infoValues):
+            stockInfo[key] = value
+        return stockInfo
+    return {}
 
 
 def main():
