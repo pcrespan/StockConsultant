@@ -18,20 +18,25 @@ def getStockSoup(stock):
 
 def getStockInfo(soup):
     stockInfo = {}
+    infoKeys = []
+    infoValues = []
 
-    allInfo = soup.find_all("td", class_ = "Ta(end) Fw(600) Lh(14px)")
+    tableRows = soup.find_all("tr", class_ = "Bxz(bb) Bdbw(1px) Bdbs(s) Bdc($seperatorColor) H(36px)")
 
-    for info in allInfo: 
-        print(info.text)
+    for row in tableRows:
+        infoKeys.append(row.find("td", class_ = "C($primaryColor) W(51%)").text)
+        infoValues.append(row.find("td", class_ = "Ta(end) Fw(600) Lh(14px)").text)
+
+    for key, value in zip(infoKeys, infoValues):
+        stockInfo[key] = value
+
+    return stockInfo
 
 
 def main():
     soup = getStockSoup(input("Stock: "))
-    print(getStockInfo(soup))
+    getStockInfo(soup)
 
 
 if __name__ == "__main__":
     main()
-
-
-

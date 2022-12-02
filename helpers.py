@@ -1,6 +1,7 @@
 import psycopg2
 from werkzeug.security import check_password_hash
 from datetime import datetime, timedelta
+from api import *
 import jwt
 
 
@@ -76,7 +77,8 @@ def getUser(usr):
 
 def genToken(usr, SECRET_KEY):
     userInfo = getUser(usr)
-    tokenExpire = datetime.now() + timedelta(minutes = 30)
+    tokenExpire = datetime.utcnow() + timedelta(minutes = 30)
+    print(tokenExpire)
 
     token = jwt.encode({
         "uid": userInfo[0][0],
@@ -85,3 +87,8 @@ def genToken(usr, SECRET_KEY):
 
     return token
 
+
+def getStock(stockSymbol):
+    soup = getStockSoup(stockSymbol)
+    stockInfo = getStockInfo(soup)
+    return stockInfo

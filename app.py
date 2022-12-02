@@ -1,9 +1,8 @@
-from flask import Flask, jsonify, make_response, redirect, render_template, request, session
+from flask import Flask, jsonify, make_response, redirect, render_template, request
 from flask_session import Session
 from functools import wraps
 from werkzeug.security import generate_password_hash
 import jwt
-import psycopg2
 from helpers import *
 
 
@@ -63,7 +62,7 @@ def login():
         if usr and pwd and validateLogin(usr, pwd):
             # Generate jwt token
             token = genToken(usr, app.config["SECRET_KEY"])
-            return {"token": token}
+            return jsonify({"token": token})
         return redirect("/login")
     else:
         return render_template("login.html")
@@ -72,5 +71,11 @@ def login():
 @app.route("/", methods = ["GET", "POST"])
 @jwtRequired
 def index():
-    pass
+    stockSymbol = request.form.get("stockSymbol")
     
+    if not stockSymbol:
+        return jsonify({"message": "No stock symbol provided"})
+    
+    if len(stockInfo := getStock(stockSymbol)) != 0:
+        return jsonify(stockInfo)
+    return jsonify({"message": "No information found"})
