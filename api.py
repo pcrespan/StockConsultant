@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
-
+import re
 
 URL = "https://finance.yahoo.com/quote/"
 HEADERS = ({'User-Agent':
@@ -17,21 +17,38 @@ def getStockSoup(stock):
     return stockSoup
 
 
-def getStockInfo(soup):
-    stockInfo = {}
+def getStockTitle(title):
+    title = title.text
+    stockTitle = re.search(r"^(.+)\.(.+)$", title)
+    name, symbol = stockTitle.groups()
+    symbol = re.sub("[()]", "", symbol)
+    return name, symbol.strip()
+
+
+def getStockGeneralInfo(tableRows):
     infoKeys = []
     infoValues = []
 
-    # Find a way to put everything together
+    for row in tableRows:
+        infoKeys.append(row.find("td", class_ = "C($primaryColor) W(51%)").text)
+        infoValues.append(row.find("td", class_ = "Ta(end) Fw(600) Lh(14px)").text)
+    return infoKeys, infoValues
+
+
+def getStockInfo(soup):
+    stockInfo = {}
+
+    title = soup.find("h1", class_ = "D(ib) Fz(18px)")
     price = soup.find("fin-streamer", class_ = "Fw(b) Fz(36px) Mb(-4px) D(ib)")
     tableRows = soup.find_all("tr", class_ = "Bxz(bb) Bdbw(1px) Bdbs(s) Bdc($seperatorColor) H(36px)")
     
-    if price and tableRows:
-        stockInfo["price"] = price.text
+    if title and price and tableRows:
+        name, symbol = getStockTitle(title)
+        stockInfo["stockName"] = name
+        stockInfo["stockSymbol"] = symbol
+        stockInfo["stockPrice"] = price.text
 
-        for row in tableRows:
-            infoKeys.append(row.find("td", class_ = "C($primaryColor) W(51%)").text)
-            infoValues.append(row.find("td", class_ = "Ta(end) Fw(600) Lh(14px)").text)
+        infoKeys, infoValues = getStockGeneralInfo(tableRows)
 
         for key, value in zip(infoKeys, infoValues):
             stockInfo[key] = value
