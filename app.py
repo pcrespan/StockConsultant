@@ -51,7 +51,7 @@ def register():
         return render_template("register.html")
 
 
-@app.route("/login", methods = ["GET", "POST"])
+@app.route("/login", methods = ["POST"])
 def login():
     if request.method == "POST":
         usr = request.form.get("username")
@@ -61,12 +61,12 @@ def login():
             # Generate jwt token
             token = genToken(usr, app.config["SECRET_KEY"])
             return jsonify({"token": token})
-        return redirect("/login")
+        return jsonify({"message": "Invalid credentials"})
     else:
-        return render_template("login.html")
+        return jsonify({"message": "GET method is not supported"})
 
 
-@app.route("/", methods = ["GET", "POST"])
+@app.route("/", methods = ["GET"])
 def index():
     if request.method == "GET":
         return render_template("index.html")
