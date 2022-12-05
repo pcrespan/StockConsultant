@@ -11,8 +11,8 @@ class dbConnection:
         conn = psycopg2.connect(
                 host = "localhost",
                 database = "api",
-                user = "postgres",
-                password = "onote"
+                user = "enid",
+                password = "stockapi"
                 )
 
         cursor = conn.cursor()

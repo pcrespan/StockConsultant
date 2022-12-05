@@ -85,8 +85,16 @@ def logout():
 
 
 @app.route("/", methods = ["GET", "POST"])
-@jwtRequired
+@loginRequired
 def index():
+    if request.method == "GET":
+        return render_template("index.html")
+    return redirect("/")
+
+
+@app.route("/quote", methods = ["POST"])
+@jwtRequired
+def quote():
     stockSymbol = request.form.get("stockSymbol")
     
     if not stockSymbol:
