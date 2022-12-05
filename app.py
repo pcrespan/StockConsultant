@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, make_response, redirect, render_template, request
+from flask import Flask, jsonify, make_response, redirect, render_template, request, session
 from flask_session import Session
 from functools import wraps
 from werkzeug.security import generate_password_hash
@@ -34,7 +34,15 @@ def jwtRequired(f):
     return checkToken
 
 
-# Error here, find a way to receive info without needing forms
+def loginRequired(f):
+    @wraps(f)
+    def checkLogin(*args, **kwargs):
+        if session.get("userId"):
+            return f(*args, **kwargs)
+        return redirect("/login")
+    return checkLogin
+
+
 @app.route("/register", methods = ["GET", "POST"])
 def register():
     if request.method == "POST":
@@ -52,7 +60,6 @@ def register():
         return render_template("register.html")
 
 
-# Still need to generate JWT token, needs refactoring
 @app.route("/login", methods = ["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -62,10 +69,19 @@ def login():
         if usr and pwd and validateLogin(usr, pwd):
             # Generate jwt token
             token = genToken(usr, app.config["SECRET_KEY"])
+            user = getUser(usr)
+            session["userId"] = user[0][0]
             return jsonify({"token": token})
         return redirect("/login")
     else:
         return render_template("login.html")
+
+
+@app.route("/logout")
+@loginRequired
+def logout():
+    session.clear()
+    return redirect("/login")
 
 
 @app.route("/", methods = ["GET", "POST"])
