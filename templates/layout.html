@@ -3,17 +3,8 @@
     <title> StockConsultant: {% block title %}{% endblock %} </title>
 
     <body>
-        {% if session["userId"] %}
         <div class = "nav-container">
             <ul class = "nav-bar">
-                <li class = "item"><a href = "/">Home</a></li>
-                <li class = "item"><a href = "/logout">Log Out</a></li>
-            </ul>
-        </div>
-        {% else %}
-        <div class = "nav-container">
-            <ul class = "nav-bar">
-                <li class = "item"><a href = "/login">Log In</a></li>
                 <li class = "item"><a href = "/register">Register</a></li>
                 </li>
             </ul>
