@@ -62,9 +62,9 @@ def registerUser(usr, hashPwd):
 # Needs refactoring
 def validateLogin(usr, pwd):
     userInfo = getUser(usr)
-    if check_password_hash(userInfo[0][1], pwd):
-        return True
-    return False
+    if not userInfo or not check_password_hash(userInfo[0][1], pwd):
+        return False
+    return True
 
 
 def getUser(usr):
