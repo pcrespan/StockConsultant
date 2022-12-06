@@ -17,13 +17,16 @@ def getStockSoup(stock):
     return stockSoup
 
 
-# Need to check for case that stockTitle is None, adjust regex
 def getStockTitle(title):
     title = title.text
-    stockTitle = re.search(r"^(.+)\.(.+)$", title)
+    stockTitle = re.search(r"^(.+)\.?([(][^)]*[)])$", title)
+
+    if not stockTitle:
+        return "", ""
+
     name, symbol = stockTitle.groups()
     symbol = re.sub("[()]", "", symbol)
-    return name, symbol.strip()
+    return name.strip(), symbol.strip()
 
 
 def getStockGeneralInfo(tableRows):
