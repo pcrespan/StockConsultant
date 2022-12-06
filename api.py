@@ -17,6 +17,7 @@ def getStockSoup(stock):
     return stockSoup
 
 
+# Need to check for case that stockTitle is None, adjust regex
 def getStockTitle(title):
     title = title.text
     stockTitle = re.search(r"^(.+)\.(.+)$", title)
