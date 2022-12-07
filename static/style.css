@@ -3,9 +3,15 @@
     padding: 0;
 }
 
+body, main {
+    background-color: black;
+    background-size: cover;
+}
+
 .logo-link {
     font-family: 'Times New Roman', Times, serif;
     font-size: 60;
+    color: white;
 }
 
 .logo-link:after {
@@ -13,11 +19,12 @@
     content: '';
     transition: all 0.5s linear;
     width: 100%;
-    border-bottom: 2px solid black;
+    border-bottom: 2px solid white;
     transform: scaleX(0);
 }
 
 .logo-link:hover:after {
+    color: white;
     transform: scale(1);
 }
 
@@ -94,9 +101,13 @@ a {
 .register-btn:hover {
     cursor: pointer;
     color: white;
-    outline: none;
-    border: 1px solid black;
     border-radius: 5px;
     height: 30px;
     background-color: #31383F;
+}
+
+.icons {
+    position: absolute;
+    left: 20px;
+    top: 20px;
 }
