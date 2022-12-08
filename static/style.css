@@ -3,6 +3,11 @@
     padding: 0;
 }
 
+p {
+    color: white;
+    font-size: 30;
+}
+
 body, main {
     background-color: black;
     background-size: cover;
@@ -30,7 +35,7 @@ body, main {
 
 a {
     text-decoration: none;
-    color: black;
+    color: white;
 }
 
 .nav-container {
@@ -40,17 +45,24 @@ a {
 }
 
 .signup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: absolute;
     right: 20px;
     top: 20px;
     width: 100px;
     height: 35px;
-    border: 1px solid black;
+    background: none;
+    border: 1px solid white;
+    border-radius: 5px;
     transition: 0.5s;
 }
 
 .signup:hover {
     cursor: pointer;
+    background-color: white;
+    color: black !important;
 }
 
 .description {
