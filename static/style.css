@@ -111,3 +111,12 @@ a {
     left: 20px;
     top: 20px;
 }
+
+.description {
+    color: white;
+    font-size: 30;
+}
+
+.documentation {
+    color: blue;
+}
