@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, make_response, redirect, render_template, request
+from flask import Flask, jsonify, redirect, render_template, request
 from flask_session import Session
 from functools import wraps
 from werkzeug.security import generate_password_hash
@@ -42,11 +42,12 @@ def register():
         pwdConf = request.form.get("confirmation")
 
         if not validateRegister(usr, pwd, pwdConf):
-            return redirect("/register")
+            error = "User already exists or passwords don't match"
+            return render_template("register.html", error = error)
 
         hashPwd = generate_password_hash(pwd)
         registerUser(usr, hashPwd)
-        return make_response("User registered", 200)
+        return redirect("/")
     else:
         return render_template("register.html")
 

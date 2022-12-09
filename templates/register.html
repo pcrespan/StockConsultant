@@ -5,6 +5,9 @@
 {% endblock %}
 
 {% block main %}
+    <div class = "error">
+        {{ error }}
+    </div>
     <div class = "signup-container">
         <form action = "/register", method = "post">
             <input class = "input-field" required name = "username" placeholder = "Username">

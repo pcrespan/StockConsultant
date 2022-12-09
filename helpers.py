@@ -43,7 +43,7 @@ def validateRegister(usr, pwd, pwdConf):
     if not usr or not pwd or not pwdConf or pwd != pwdConf:
         dbConnection.closeConnection(conn, cursor)
         return False
-        
+
     cursor.execute("SELECT id FROM users WHERE username = %s;", (usr, ))
     usr_exists = cursor.fetchall()
     if usr_exists or pwd != pwdConf:

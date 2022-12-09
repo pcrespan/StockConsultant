@@ -155,3 +155,10 @@ footer {
     text-align: center;
     width: 100%;
 }
+
+.error {
+    font-size: 20;
+    color: red;
+    display: flex;
+    justify-content: center;
+}
