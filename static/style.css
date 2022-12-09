@@ -125,10 +125,34 @@ a {
 }
 
 .description {
+    display: inline-block;
+    flex-direction: column;
+    justify-content: center;
+    height: 50vh;
     color: white;
     font-size: 30;
+    line-height: 3em;
 }
 
 .documentation {
     color: blue;
+}
+
+.api {
+    display: inline-block;
+    flex-direction: column;
+    justify-content: center;
+    height: 50vh;
+    position: absolute;
+    right: 150px;
+    top: 150px;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    color: white;
+    font-size: 16;
+    display: flex;
+    justify-content: center;
 }

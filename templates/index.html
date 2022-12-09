@@ -5,13 +5,17 @@
 {% endblock %}
 
 {% block main %}
-    <p>A <span style = "color: red">simple way</span> to gather <span style = "color: red"> information</span> from the <span style = "color: red"> stock market</span>.</p>
-    <p>Read the <a class = "documentation" href = "https://github.com/pcrespan/StockConsultant">documentation</a></p>
-    <div>
-        <img class = "lower-icons" src = "/static/search.png" width = "100" height = "100">
-        <img class = "center-icon" src = "/static/network.png" width = "100" height = "100">
-        <img class = "lower-icons" src = "/static/info.png" width = "100" height = "100">
-        <img class = "upper-icons" src = "/static/money.png" width = "100" height = "100">
-        <img class = "upper-icons" src = "/static/stockmkt.png" width = "100" height = "100">
+    <div class = "description">
+        <p>Simple</p>
+        <p>Free</p>
+        <p>Open source</p>
+        <p>Read the <a class = "documentation" href = "https://github.com/pcrespan/StockConsultant">documentation</a></p>
     </div>
+    <div class = "api">
+        <img src = "/static/api.png" height = "350" width = "350">
+    </div>
+    <footer>
+        <span>Data provided by <a href = "https://finance.yahoo.com/"> Yahoo Finance </a></span>
+        <span> Icon made by <a href="https://www.flaticon.com/authors/justicon" title="justicon"> justicon </a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></span>
+    </footer>
 {% endblock %}
