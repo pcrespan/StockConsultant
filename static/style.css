@@ -140,7 +140,6 @@ a {
 
 .api {
     display: inline-block;
-    flex-direction: column;
     justify-content: center;
     height: 50vh;
     position: absolute;
@@ -149,10 +148,10 @@ a {
 }
 
 footer {
+    color: white;
     position: absolute;
     bottom: 0;
-    color: white;
-    font-size: 16;
-    display: flex;
-    justify-content: center;
+    left: 0;
+    text-align: center;
+    width: 100%;
 }
