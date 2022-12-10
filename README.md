@@ -11,14 +11,18 @@ The register process should be done on the website hosted locally. The user shou
 
 ### Example - using `curl` command
 
+First, the server should be started - inside of StockConsultant directory:
+
+```
+flask run
+```
+
+Logging in and retrieving JWT token:
 ```
 curl -X POST -d "username=<user>&password=<password>" http://127.0.0.1:5000/login
 ```
 
-The command will return a response from the server, which will be the token.
-
+Sending request to retrieve stock information:
 ```
 curl -X POST -d "accessToken=<token>&stockSymbol=<symbol>" http://127.0.0.1/quote
 ```
-
-The command will return all the information regarding the stock
