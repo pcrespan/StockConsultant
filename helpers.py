@@ -9,10 +9,10 @@ class dbConnection:
     @staticmethod
     def getConnection():
         conn = psycopg2.connect(
-                host = "localhost",
-                database = "api",
-                user = "enid",
-                password = "stockapi"
+                host = "",
+                database = "",
+                user = "",
+                password = ""
                 )
 
         cursor = conn.cursor()
