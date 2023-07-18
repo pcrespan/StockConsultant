@@ -24,5 +24,5 @@ curl -X POST -d "username=<user>&password=<password>" http://127.0.0.1:5000/logi
 
 Sending request to retrieve stock information:
 ```
-curl -X POST -d "accessToken=<token>&stockSymbol=<symbol>" http://127.0.0.1/quote
+curl -X POST -d "accessToken=<token>&stockSymbol=<symbol>" http://127.0.0.1:5000/quote
 ```
